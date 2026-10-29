@@ -25,7 +25,7 @@ const points = [
   },
 ];
 
-export default function PortalMatch() {
+export default function PortalMatch({ n }) {
   const [active, setActive] = useState(0);
   const gridRef = useRef(null);
   const itemRefs = useRef([]);
@@ -70,7 +70,7 @@ export default function PortalMatch() {
     <section className="portal" id="portal" aria-labelledby="portal-title">
       <div className="wrap portal-grid" ref={gridRef}>
         <div>
-          <Tag n="02">Looks like the real thing</Tag>
+          <Tag n={n}>Looks like the real thing</Tag>
           <h2 id="portal-title">Same screens they'll see on the GST Portal.</h2>
           <p className="lede">Fileroom follows the GST Portal's layout, menus and form tables. The first time students log in at work, they already know where everything is.</p>
           <ol className="portal-points">

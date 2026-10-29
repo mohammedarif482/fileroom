@@ -28,7 +28,7 @@ const plans = [
 
 const fmt = (n) => '₹' + n.toLocaleString('en-IN');
 
-export default function Pricing() {
+export default function Pricing({ n, title = 'Priced per institute, not per click.', lede }) {
   const [annual, setAnnual] = useState(false);
 
   return (
@@ -36,11 +36,11 @@ export default function Pricing() {
       <div className="wrap">
         <div className="section-head">
           <div>
-            <Tag n="06">Pricing</Tag>
-            <h2 id="price-title">Priced per institute, not per click.</h2>
+            <Tag n={n}>Pricing</Tag>
+            <h2 id="price-title">{title}</h2>
           </div>
           <div>
-            <p className="lede">Every plan includes every form, the instructor panel and updates when GST rules change.</p>
+            <p className="lede">{lede}</p>
             <div className="seg billing" role="group" aria-label="Billing period">
               <button type="button" aria-pressed={!annual} onClick={() => setAnnual(false)}>Monthly</button>
               <button type="button" aria-pressed={annual} onClick={() => setAnnual(true)}>Annual<em>2 months free</em></button>
@@ -74,7 +74,7 @@ export default function Pricing() {
             </div>
           ))}
         </div>
-        <p className="price-note">Prices exclude GST.</p>
+        <p className="price-note">Prices are per module and exclude GST.</p>
       </div>
     </section>
   );

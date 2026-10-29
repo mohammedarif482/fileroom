@@ -1,13 +1,6 @@
 import { useState } from 'react';
 import { Check, Tag } from './ui.jsx';
 
-const features = [
-  ['Load a case study once', 'Upload businesses and invoice sets from Excel, then give every student the same starting point.'],
-  ['Assign real tasks', '"File October GSTR-1 and 3B for Anand Traders by Friday."'],
-  ['Reset a period, not the whole account', 'Let a student redo one month without losing the rest of their year.'],
-];
-
-const MONTHS = ['Jul', 'Aug', 'Sep', 'Oct'];
 const LABELS = { ok: 'Filed', late: 'Filed late', todo: 'Not filed' };
 
 const students = [
@@ -38,7 +31,13 @@ function Cell({ s }) {
   );
 }
 
-export default function Instructors() {
+// `periods` are the four columns of the progress table, `late` says what lateness costs
+export default function Instructors({ n, title, range, periods, late: lateCost, task }) {
+  const features = [
+    ['Load a case study once', 'Upload businesses and their transactions from Excel, then give every student the same starting point.'],
+    ['Assign real tasks', task],
+    ['Reset a period, not the whole account', 'Let a student redo one period without losing the rest of their year.'],
+  ];
   const [filter, setFilter] = useState('all');
   const shown = filter === 'all' ? students : needsHelp;
 
@@ -46,7 +45,7 @@ export default function Instructors() {
     <section id="instructors" aria-labelledby="teach-title">
       <div className="wrap teach-grid">
         <div>
-          <Tag n="05">For instructors</Tag>
+          <Tag n={n}>For instructors</Tag>
           <h2 id="teach-title">Run the whole batch from one screen.</h2>
           <p className="lede" style={{ marginTop: 20 }}>Instructors set the case study, hand out the work and see exactly where each student is stuck.</p>
           <ol className="teach-list">
@@ -61,7 +60,7 @@ export default function Instructors() {
 
         <div className="dash">
           <div className="dash-head">
-            <div><h3>Batch B-14 · GSTR-3B</h3><small>Jul to Oct 2026</small></div>
+            <div><h3>Batch B-14 · {title}</h3><small>{range}</small></div>
             <div className="seg" role="group" aria-label="Filter students">
               <button type="button" aria-pressed={filter === 'all'} onClick={() => setFilter('all')}>All students</button>
               <button type="button" aria-pressed={filter === 'help'} onClick={() => setFilter('help')}>
@@ -81,7 +80,7 @@ export default function Instructors() {
             <div className="d-stat alert">
               <small>To follow up</small>
               <b>{late + pending}</b>
-              <p><i style={{ background: 'var(--red)' }} />{late} late, interest charged</p>
+              <p><i style={{ background: 'var(--red)' }} />{late} late, {lateCost}</p>
               <p><i style={{ border: '1.5px dashed #6E7488' }} />{pending} not filed yet</p>
             </div>
           </div>
@@ -89,7 +88,7 @@ export default function Instructors() {
           <div className="table-wrap">
             <table className="ptable">
               <thead>
-                <tr><th scope="col">Student</th>{MONTHS.map((m) => <th scope="col" key={m}>{m}</th>)}</tr>
+                <tr><th scope="col">Student</th>{periods.map((m) => <th scope="col" key={m}>{m}</th>)}</tr>
               </thead>
               <tbody>
                 {shown.map(([name, months, tint]) => (
@@ -110,7 +109,7 @@ export default function Instructors() {
           </div>
           <div className="pkey">
             <span><Cell s="ok" />Filed</span>
-            <span><Cell s="late" />Filed late, interest charged</span>
+            <span><Cell s="late" />Filed late, {lateCost}</span>
             <span><Cell s="todo" />Not filed</span>
           </div>
         </div>

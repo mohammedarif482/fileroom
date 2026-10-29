@@ -1,22 +1,14 @@
 import { useState } from 'react';
 import { Tag } from './ui.jsx';
 
-const faqs = [
-  ['Is Fileroom connected to the real GST portal?', 'No. Fileroom is an independent training platform. Nothing a student files reaches the government, and no real payments, Aadhaar or OTP checks happen.'],
-  ['Whose data do students use?', 'Practice data only. Businesses, GSTINs, invoices and bank details are fictitious, either from our case studies or your own uploaded through the instructor panel.'],
-  ['What happens when GST rules or rates change?', 'We update rates, forms and calculations on our side. Your students see the change the next time they log in, with nothing to install.'],
-  ['Can students practise from home?', 'Yes. Fileroom runs in the browser on any laptop or desktop. Each student has their own account, so their work is waiting where they left it.'],
-  ['How long does setup take?', "Most institutes run their first class within a week. Upload your student list, pick a case study, and you're ready."],
-];
-
-export default function Faq() {
+export default function Faq({ n, faqs }) {
   const [open, setOpen] = useState(0);
 
   return (
     <section aria-labelledby="faq-title" className="faq">
       <div className="wrap faq-grid">
         <div className="faq-aside">
-          <Tag n="07">FAQ</Tag>
+          <Tag n={n}>FAQ</Tag>
           <h2 id="faq-title">Questions institutes ask first.</h2>
           <p className="lede" style={{ marginTop: 20 }}>Something else? <a href="#demo">Ask us on the demo call.</a></p>
         </div>
