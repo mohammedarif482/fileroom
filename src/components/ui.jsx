@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useCountUp } from '../utils.js';
 
 export function Tag({ n, children, dark }) {
   return (
@@ -21,6 +22,36 @@ export function Check() {
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M3.5 8.5l3 3 6-7" />
     </svg>
+  );
+}
+
+// `portal` names the portal you're in, shown after the wordmark in its colour
+export function Logo({ portal }) {
+  return (
+    <a href="/" className="logo" aria-label="Fileroom home">
+      <svg className="logo-mark" viewBox="0 0 28 28" aria-hidden="true">
+        <rect width="28" height="28" rx="8" fill="#0D111C" />
+        <path d="M8.5 9.5h11M8.5 14h11M8.5 18.5h6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="19.5" cy="19" r="3.6" fill="#D4F55A" />
+      </svg>
+      Fileroom
+      {portal && <span className="logo-portal">{portal}</span>}
+    </a>
+  );
+}
+
+// A formatted amount that tweens whenever its value changes
+export function Amount({ value, fmt, from = value, duration }) {
+  return fmt(useCountUp(value, { from, duration }));
+}
+
+// Internal links stay in the tab, WhatsApp opens a new one
+export function CtaLink({ href, label, className }) {
+  const external = href.startsWith('http');
+  return (
+    <a href={href} className={className} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+      {label} <Arrow />
+    </a>
   );
 }
 

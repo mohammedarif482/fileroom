@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Arrow, Check, Mosaic, Scribble } from './ui.jsx';
+import { Arrow, Check, Mosaic } from './ui.jsx';
 import { whatsappLink } from '../utils.js';
 
 const FIELDS = {
@@ -8,12 +8,8 @@ const FIELDS = {
   contact: 'We need a phone number or email to reach you',
 };
 
-const points = [
-  'A full filing month on a live practice account',
-  'A free trial batch set up for your faculty',
-];
-
-export default function Demo({ filing }) {
+// `ask` finishes the WhatsApp message: "...and I'd like to book a demo of ..."
+export default function Demo({ title, lede, points, ask, filing }) {
   const formRef = useRef(null);
   const [errors, setErrors] = useState({});
   const [done, setDone] = useState(false);
@@ -31,7 +27,7 @@ export default function Demo({ filing }) {
     const v = (n) => form.elements[n].value.trim();
     const message =
       `Hi Fileroom, I'm ${v('name')} from ${v('org')}. ` +
-      `We have ${v('size').toLowerCase()} students a year, and I'd like to book a demo of your GST practice portal. ` +
+      `We have ${v('size').toLowerCase()} students a year, and ${ask}. ` +
       `You can reach me at ${v('contact')}.`;
     window.open(whatsappLink(message), '_blank', 'noopener,noreferrer');
     setDone(true);
@@ -61,12 +57,10 @@ export default function Demo({ filing }) {
         <div className="wrap demo-grid">
           <div>
             {filing && (
-              <p className="demo-callback">
-                You just filed October for Anand Traders. Your students have the other eleven months.
-              </p>
+              <p className="demo-callback">{filing.sim.callback}</p>
             )}
-            <h2 id="demo-title">Bring a working GST portal to your <Scribble>next batch.</Scribble></h2>
-            <p className="lede">We'll walk you through a full filing month on a live practice account, and set up a free trial batch for your faculty.</p>
+            <h2 id="demo-title">{title}</h2>
+            <p className="lede">{lede}</p>
             <ul className="demo-points">
               {points.map((p) => <li key={p}><i><Check /></i>{p}</li>)}
             </ul>
@@ -77,7 +71,7 @@ export default function Demo({ filing }) {
               <div className="form-done" role="status">
                 <span className="ok-badge"><Check /></span>
                 <h3>Demo request received</h3>
-                <p>Send the message we opened in WhatsApp and we'll reply within one working day. <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">Open WhatsApp again</a></p>
+                <p>Send the message we opened in WhatsApp and we'll reply within one working day. <a href={whatsappLink(`Hi Fileroom, ${ask}.`)} target="_blank" rel="noopener noreferrer">Open WhatsApp again</a></p>
               </div>
             ) : (
               <form ref={formRef} onSubmit={onSubmit} noValidate>

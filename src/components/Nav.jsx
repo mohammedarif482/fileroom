@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'react';
-import { Arrow } from './ui.jsx';
-import { whatsappLink } from '../utils.js';
+import { useEffect, useRef, useState } from 'react';
+import { CtaLink, Logo } from './ui.jsx';
+import { products } from '../products/index.js';
 
 const links = [
-  ['#how', 'How it works'],
-  ['#forms', 'Coverage'],
   ['#instructors', 'For instructors'],
+  ['/#partners', 'Partners'],
   ['#pricing', 'Pricing'],
 ];
 
-export default function Nav() {
+export default function Nav({ current, cta }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const productsRef = useRef(null);
+  const here = products.find((p) => p.key === current);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -21,29 +23,51 @@ export default function Nav() {
   }, []);
 
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e) => e.key === 'Escape' && setOpen(false);
+    if (!open && !productsOpen) return;
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return;
+      setOpen(false);
+      setProductsOpen(false);
+    };
+    const onDown = (e) => {
+      if (!productsRef.current?.contains(e.target)) setProductsOpen(false);
+    };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
+    document.addEventListener('pointerdown', onDown);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onDown);
+    };
+  }, [open, productsOpen]);
 
   return (
     <header className={`nav${scrolled ? ' scrolled' : ''}${open ? ' menu-open' : ''}`}>
       <div className="wrap">
         <div className="nav-inner">
-          <a href="#top" className="logo" aria-label="Fileroom home">
-            <svg className="logo-mark" viewBox="0 0 28 28" aria-hidden="true">
-              <rect width="28" height="28" rx="8" fill="#0D111C" />
-              <path d="M8.5 9.5h11M8.5 14h11M8.5 18.5h6" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-              <circle cx="19.5" cy="19" r="3.6" fill="#D4F55A" />
-            </svg>
-            Fileroom
-          </a>
+          <Logo portal={here?.label} />
           <nav className="nav-links" aria-label="Main">
+            <div className="has-menu" ref={productsRef}>
+              <button
+                type="button" className="products-btn"
+                aria-expanded={productsOpen} aria-controls="products-panel"
+                onClick={() => setProductsOpen((o) => !o)}
+              >
+                Products
+                <svg viewBox="0 0 12 8" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="M1 1.5l5 5 5-5" /></svg>
+              </button>
+              <div id="products-panel" className="products-panel" hidden={!productsOpen}>
+                {products.map((p) => (
+                  <a key={p.key} href={p.path} data-portal={p.key} aria-current={p.key === current ? 'page' : undefined}>
+                    <strong><i className="p-dot" />{p.name}</strong>
+                    <span>{p.sub}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
             {links.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
           </nav>
           <div className="nav-cta">
-            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn btn-dark">Book a demo <Arrow /></a>
+            <CtaLink className="btn btn-dark" {...cta} />
             <button
               type="button" className="menu-btn" aria-label="Menu"
               aria-expanded={open} aria-controls="mobile-menu"
@@ -52,6 +76,13 @@ export default function Nav() {
           </div>
         </div>
         <nav id="mobile-menu" className="mobile-menu" hidden={!open} aria-label="Mobile">
+          <h4>Products</h4>
+          {products.map((p) => (
+            <a key={p.key} href={p.path} data-portal={p.key} aria-current={p.key === current ? 'page' : undefined} onClick={() => setOpen(false)}>
+              <span className="m-row"><i className="p-dot" />{p.name}</span>
+            </a>
+          ))}
+          <hr />
           {links.map(([href, label]) => (
             <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>
           ))}
