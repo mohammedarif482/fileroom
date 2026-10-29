@@ -25,6 +25,7 @@ export default {
   name: 'Income Tax',
   short: 'income tax',
   region: 'India',
+  label: 'Income Tax',
   path: '/income-tax/',
   sub: 'ITR-1, 2 and 4, both regimes',
   blurb: 'Check Form 16 against AIS, compare both regimes and file ITR-1, 2 or 4.',

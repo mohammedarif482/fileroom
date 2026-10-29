@@ -9,6 +9,7 @@ export default {
   name: 'GST',
   short: 'GST',
   region: 'India',
+  label: 'GST',
   path: '/gst/',
   featured: true,
   sub: 'Registration, GSTR-1 and 3B, challans, e-way bills',

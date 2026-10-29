@@ -28,20 +28,23 @@ export default function Hero({ title, lede, sims, facts, primary, onFiled }) {
           </div>
         </div>
 
-        <div className="stage">
+        {/* One portal: the stage takes its colour. Several: the stage stays neutral and only the console changes. */}
+        <div className="stage" data-portal={sims.length > 1 ? undefined : sim.portal}>
           <Mosaic />
           <div className="stage-inner">
             {sims.length > 1 && (
               <div className="sim-tabs" role="group" aria-label="Choose a return to file">
                 {sims.map((s, i) => (
-                  <button key={s.tab} type="button" aria-pressed={i === tab} onClick={() => setTab(i)}>
-                    {s.tab}
+                  <button key={s.tab} type="button" data-portal={s.portal} aria-pressed={i === tab} onClick={() => setTab(i)}>
+                    <i aria-hidden="true" />{s.tab}
                   </button>
                 ))}
               </div>
             )}
-            <Console key={sim.tab} ref={consoleRef} sim={sim} onFiled={onFiled} />
-            <p className="stage-hint">{sim.hint}</p>
+            <div className="stage-console" data-portal={sim.portal}>
+              <Console key={sim.tab} ref={consoleRef} sim={sim} onFiled={onFiled} />
+              <p className="stage-hint">{sim.hint}</p>
+            </div>
           </div>
         </div>
 

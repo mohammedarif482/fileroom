@@ -13,6 +13,7 @@ export default function Nav({ current, cta }) {
   const [open, setOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const productsRef = useRef(null);
+  const here = products.find((p) => p.key === current);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -43,7 +44,7 @@ export default function Nav({ current, cta }) {
     <header className={`nav${scrolled ? ' scrolled' : ''}${open ? ' menu-open' : ''}`}>
       <div className="wrap">
         <div className="nav-inner">
-          <Logo />
+          <Logo portal={here?.label} />
           <nav className="nav-links" aria-label="Main">
             <div className="has-menu" ref={productsRef}>
               <button
@@ -56,8 +57,8 @@ export default function Nav({ current, cta }) {
               </button>
               <div id="products-panel" className="products-panel" hidden={!productsOpen}>
                 {products.map((p) => (
-                  <a key={p.key} href={p.path} aria-current={p.key === current ? 'page' : undefined}>
-                    <strong>{p.name}</strong>
+                  <a key={p.key} href={p.path} data-portal={p.key} aria-current={p.key === current ? 'page' : undefined}>
+                    <strong><i className="p-dot" />{p.name}</strong>
                     <span>{p.sub}</span>
                   </a>
                 ))}
@@ -77,7 +78,9 @@ export default function Nav({ current, cta }) {
         <nav id="mobile-menu" className="mobile-menu" hidden={!open} aria-label="Mobile">
           <h4>Products</h4>
           {products.map((p) => (
-            <a key={p.key} href={p.path} aria-current={p.key === current ? 'page' : undefined} onClick={() => setOpen(false)}>{p.name}</a>
+            <a key={p.key} href={p.path} data-portal={p.key} aria-current={p.key === current ? 'page' : undefined} onClick={() => setOpen(false)}>
+              <span className="m-row"><i className="p-dot" />{p.name}</span>
+            </a>
           ))}
           <hr />
           {links.map(([href, label]) => (

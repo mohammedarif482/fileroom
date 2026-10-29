@@ -8,6 +8,7 @@ export default {
   name: 'TDS',
   short: 'TDS',
   region: 'India',
+  label: 'TDS',
   path: '/tds/',
   sub: 'Challan 281, 24Q and 26Q, TRACES',
   blurb: 'Deduct under the right section, deposit by challan 281, file 26Q and issue Form 16A.',

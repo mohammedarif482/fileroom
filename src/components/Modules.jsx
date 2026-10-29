@@ -1,5 +1,6 @@
 import { Arrow, Tag } from './ui.jsx';
 import { products } from '../products/index.js';
+import PortalIcon from './PortalIcon.jsx';
 
 // One card per practice portal. On a product page, pass `exclude` to list the others.
 export default function Modules({ n, title, lede, exclude }) {
@@ -17,9 +18,9 @@ export default function Modules({ n, title, lede, exclude }) {
         </div>
         <div className="m-grid">
           {shown.map((p) => (
-            <a href={p.path} className={`m-card${p.featured ? ' featured' : ''}`} key={p.key}>
+            <a href={p.path} className={`m-card${p.featured ? ' featured' : ''}`} data-portal={p.key} key={p.key}>
               <div className="m-top">
-                <span className="m-form code">{p.chips[0]}</span>
+                <PortalIcon portal={p.key} />
                 <span className="b-count">{p.region}</span>
               </div>
               <h3>{p.name}</h3>

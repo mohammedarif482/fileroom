@@ -8,6 +8,7 @@ export default {
   name: 'EPFO',
   short: 'EPFO',
   region: 'India',
+  label: 'EPFO',
   path: '/epfo/',
   sub: 'ECR, challans, member passbooks',
   blurb: "Prepare the ECR, pay the challan and see every member's passbook update.",

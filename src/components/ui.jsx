@@ -25,7 +25,8 @@ export function Check() {
   );
 }
 
-export function Logo() {
+// `portal` names the portal you're in, shown after the wordmark in its colour
+export function Logo({ portal }) {
   return (
     <a href="/" className="logo" aria-label="Fileroom home">
       <svg className="logo-mark" viewBox="0 0 28 28" aria-hidden="true">
@@ -34,6 +35,7 @@ export function Logo() {
         <circle cx="19.5" cy="19" r="3.6" fill="#D4F55A" />
       </svg>
       Fileroom
+      {portal && <span className="logo-portal">{portal}</span>}
     </a>
   );
 }

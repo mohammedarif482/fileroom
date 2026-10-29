@@ -8,6 +8,7 @@ export default {
   name: 'UAE VAT & Corporate Tax',
   short: 'UAE',
   region: 'UAE',
+  label: 'UAE VAT',
   path: '/uae-vat/',
   featured: true,
   sub: 'VAT 201 and corporate tax on EmaraTax',
